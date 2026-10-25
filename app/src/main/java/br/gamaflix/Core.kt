@@ -59,6 +59,17 @@ object Prefs {
             .apply()
     }
 
+    /** Dados salvos da lista, para a tela de alteração. */
+    fun current(c: Context): Map<String, String> {
+        val s = sp(c)
+        return mapOf(
+            "mode" to s.getString("mode", "xtream").orEmpty(),
+            "server" to s.getString("server", "").orEmpty(),
+            "user" to s.getString("user", "").orEmpty(),
+            "pass" to s.getString("pass", "").orEmpty()
+        )
+    }
+
     fun clear(c: Context) {
         sp(c).edit().clear().apply()
     }

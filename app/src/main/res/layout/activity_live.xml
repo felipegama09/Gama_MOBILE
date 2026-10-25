@@ -150,6 +150,13 @@
             android:textSize="12sp" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/btnEpg"
+        style="@style/TabText"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="Programação completa (EPG)" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

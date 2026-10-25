@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.dispose
 import coil.load
 
-class CatAdapter(private val onPick: (index: Int, byClick: Boolean) -> Unit) :
+class CatAdapter(
+    private val layoutRes: Int = R.layout.item_cat,
+    private val onPick: (index: Int, byClick: Boolean) -> Unit
+) :
     RecyclerView.Adapter<CatAdapter.VH>() {
 
     private var data: List<Cat> = emptyList()
@@ -32,7 +35,7 @@ class CatAdapter(private val onPick: (index: Int, byClick: Boolean) -> Unit) :
     class VH(val tv: TextView) : RecyclerView.ViewHolder(tv)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        VH(LayoutInflater.from(parent.context).inflate(R.layout.item_chip, parent, false) as TextView)
+        VH(LayoutInflater.from(parent.context).inflate(layoutRes, parent, false) as TextView)
 
     override fun getItemCount() = data.size
 

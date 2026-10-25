@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
@@ -46,7 +48,7 @@ class LiveActivity : AppCompatActivity() {
     private lateinit var tvNextTime: TextView
 
     // post(): a troca de categoria acontece depois do layout, nunca durante ele
-    private val catAdapter = CatAdapter { i, _ -> rvCats.post { onCat(i) } }
+    private val catAdapter = CatAdapter(R.layout.item_chip) { i, _ -> rvCats.post { onCat(i) } }
     private val channelAdapter = ChannelAdapter(
         onFocus = { p -> schedulePreview(p) },
         onClick = { p -> tapChannel(p) }
@@ -96,6 +98,7 @@ class LiveActivity : AppCompatActivity() {
         rvChannels.itemAnimator = null
 
         findViewById<TextView>(R.id.tabHome).setOnClickListener { finish() }
+        findViewById<TextView>(R.id.btnEpg).setOnClickListener { showFullEpg() }
         findViewById<TextView>(R.id.tabLive).isSelected = true
         findViewById<TextView>(R.id.tabMovies).setOnClickListener { switchTo(MainActivity::class.java, Kind.MOVIE) }
         findViewById<TextView>(R.id.tabSeries).setOnClickListener { switchTo(MainActivity::class.java, Kind.SERIES) }
@@ -259,6 +262,37 @@ class LiveActivity : AppCompatActivity() {
         if (kind != null) i.putExtra("kind", kind.name)
         startActivity(i)
         finish()
+    }
+
+    /** Programação completa do canal (com descrição de cada programa), para ler. */
+    private fun showFullEpg() {
+        val item = channels.getOrNull(selected)
+        if (item == null) {
+            Toast.makeText(this, "Selecione um canal", Toast.LENGTH_SHORT).show()
+            return
+        }
+        lifecycleScope.launch {
+            val progs = try {
+                Store.source?.epg(item) ?: emptyList()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                emptyList()
+            }
+            if (progs.isEmpty()) {
+                Toast.makeText(this@LiveActivity, "Este canal não tem programação disponível", Toast.LENGTH_LONG).show()
+                return@launch
+            }
+            val text = progs.joinToString("\n\n") { p ->
+                val head = "${hm(p.start)} – ${hm(p.stop)}  ${p.title}"
+                if (p.desc.isNotBlank()) "$head\n${p.desc}" else head
+            }
+            AlertDialog.Builder(this@LiveActivity, R.style.NovaDialog)
+                .setTitle(item.name)
+                .setMessage(text)
+                .setPositiveButton("Fechar", null)
+                .show()
+        }
     }
 
     private fun nowSec(): Long = System.currentTimeMillis() / 1000

@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         tvEmpty = findViewById(R.id.tvEmpty)
         progress = findViewById(R.id.progress)
 
-        grid = GridLayoutManager(this, 3)
+        grid = GridLayoutManager(this, 2)
         itemAdapter = ItemAdapter { list, pos -> onItem(list, pos) }
         rvItems.layoutManager = grid
         rvItems.adapter = itemAdapter
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         rvItems.itemAnimator = null
         rvItems.setItemViewCacheSize(8)
 
-        rvCats.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvCats.layoutManager = LinearLayoutManager(this)
         rvCats.adapter = catAdapter
         rvCats.itemAnimator = null
 
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         kind = k
         query = ""
         tabs.forEach { it.first.isSelected = it.second == k }
-        grid.spanCount = 3
+        grid.spanCount = 2
         itemAdapter.kind = k
 
         job?.cancel()

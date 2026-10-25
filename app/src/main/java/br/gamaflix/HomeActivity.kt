@@ -153,17 +153,36 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openSettings() {
-        val options = arrayOf("Apagar assistidos recentemente", "Sair da conta")
+        val options = arrayOf(
+            "Atualizar lista",
+            "Alterar dados da lista",
+            "Apagar assistidos recentemente",
+            "Sair da conta"
+        )
         AlertDialog.Builder(this, R.style.NovaDialog)
             .setTitle("Configurações")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> confirmClearHistory()
-                    1 -> logout()
+                    0 -> refreshList()
+                    1 -> editList()
+                    2 -> confirmClearHistory()
+                    3 -> logout()
                 }
             }
             .setNegativeButton("Fechar", null)
             .show()
+    }
+
+    /** Descarta o cache e baixa a lista de novo (quando o provedor atualizou o conteúdo). */
+    private fun refreshList() {
+        Store.cache.clear()
+        Toast.makeText(this, "Atualizando lista...", Toast.LENGTH_SHORT).show()
+        loadRows()
+    }
+
+    /** Abre o login já preenchido para trocar servidor, usuário ou senha. */
+    private fun editList() {
+        startActivity(Intent(this, LoginActivity::class.java).putExtra("edit", true))
     }
 
     private fun confirmClearHistory() {
