@@ -16,5 +16,5 @@ jobs:
       - run: chmod +x gradlew && ./gradlew assembleRelease
       - uses: actions/upload-artifact@v4
         with:
-          name: GamaFlix-celular-apk
+          name: GamaFlix-apk
           path: app/build/outputs/apk/release/*.apk

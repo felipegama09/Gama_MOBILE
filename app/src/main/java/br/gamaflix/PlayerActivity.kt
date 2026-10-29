@@ -42,11 +42,6 @@ class PlayerActivity : AppCompatActivity() {
         resumeMs = Resume.pos
         Resume.pos = 0L
         view.useController = !Store.zap
-        // No celular não há controle remoto: botões na tela trocam de canal.
-        val zapBar = findViewById<android.view.View>(R.id.zapBar)
-        zapBar.visibility = if (Store.zap) View.VISIBLE else View.GONE
-        findViewById<TextView>(R.id.btnPrev).setOnClickListener { zap(-1) }
-        findViewById<TextView>(R.id.btnNext).setOnClickListener { zap(1) }
         if (Store.playList.isEmpty()) finish()
     }
 

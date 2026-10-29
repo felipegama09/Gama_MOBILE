@@ -8,7 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "br.gamaflix.celular"
+        applicationId = "br.gamaflix"
         minSdk = 21
         targetSdk = 34
         versionCode = 1

@@ -48,10 +48,10 @@ class LiveActivity : AppCompatActivity() {
     private lateinit var tvNextTime: TextView
 
     // post(): a troca de categoria acontece depois do layout, nunca durante ele
-    private val catAdapter = CatAdapter(R.layout.item_chip) { i, _ -> rvCats.post { onCat(i) } }
+    private val catAdapter = CatAdapter { i, _ -> rvCats.post { onCat(i) } }
     private val channelAdapter = ChannelAdapter(
         onFocus = { p -> schedulePreview(p) },
-        onClick = { p -> tapChannel(p) }
+        onClick = { p -> openFull(p) }
     )
 
     private var cats: List<Cat> = emptyList()
@@ -90,7 +90,7 @@ class LiveActivity : AppCompatActivity() {
         tvNextTitle = findViewById(R.id.tvNextTitle)
         tvNextTime = findViewById(R.id.tvNextTime)
 
-        rvCats.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvCats.layoutManager = LinearLayoutManager(this)
         rvCats.adapter = catAdapter
         rvChannels.layoutManager = LinearLayoutManager(this)
         rvChannels.adapter = channelAdapter
@@ -104,7 +104,6 @@ class LiveActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tabSeries).setOnClickListener { switchTo(MainActivity::class.java, Kind.SERIES) }
         // Clicar na prévia também abre o canal em tela cheia.
         preview.setOnClickListener { if (selected >= 0) openFull(selected) }
-        findViewById<View>(R.id.previewBox).setOnClickListener { if (selected >= 0) openFull(selected) }
         loadCatalog()
     }
 
@@ -144,13 +143,6 @@ class LiveActivity : AppCompatActivity() {
         tvEmpty.visibility = if (channels.isEmpty()) View.VISIBLE else View.GONE
         selected = -1
         if (channels.isNotEmpty()) schedulePreview(0) else refreshNowNext()
-    }
-
-    /** No celular não há foco: tocar em um canal mostra a prévia dele na hora. */
-    private fun tapChannel(p: Int) {
-        selected = p
-        handler.removeCallbacks(previewRunnable)
-        previewSelected()
     }
 
     /** Espera meio segundo parado no canal antes de carregar a prévia (evita carregar a cada tecla). */

@@ -31,41 +31,4 @@
         android:textColor="@color/text"
         android:textSize="18sp"
         android:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/zapBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="28dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/btnPrev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_panel"
-            android:paddingStart="16dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="10dp"
-            android:text="◀  Anterior"
-            android:textColor="@color/text"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/bg_panel"
-            android:paddingStart="16dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="10dp"
-            android:text="Próximo  ▶"
-            android:textColor="@color/text"
-            android:textSize="15sp" />
-    </LinearLayout>
 </FrameLayout>

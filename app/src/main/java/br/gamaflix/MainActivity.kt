@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         tvEmpty = findViewById(R.id.tvEmpty)
         progress = findViewById(R.id.progress)
 
-        grid = GridLayoutManager(this, 2)
+        grid = GridLayoutManager(this, 4)
         itemAdapter = ItemAdapter { list, pos -> onItem(list, pos) }
         rvItems.layoutManager = grid
         rvItems.adapter = itemAdapter
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         kind = k
         query = ""
         tabs.forEach { it.first.isSelected = it.second == k }
-        grid.spanCount = 2
+        grid.spanCount = if (k == Kind.LIVE) 4 else 5
         itemAdapter.kind = k
 
         job?.cancel()
